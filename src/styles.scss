@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+#grid {
+  width: 100%;
+  .row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+  }
+
+  .cell {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border: black solid 1px;
+  }
+
+  .red {
+    background-color: red;
+  }
+
+  .green {
+    background-color: green;
+  }
+
+  .silver {
+    background-color: silver;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }
+
+  .visible {
+    visibility: visible;
+  }
+
+}
+

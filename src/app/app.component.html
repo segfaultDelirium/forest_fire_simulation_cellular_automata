@@ -1,0 +1,69 @@
+<div id="header">
+  <h1>Projekt 2 automaty komórkowe: rozprzestrzenianie się pożaru lasu.</h1>
+  <h5>autor: Wiktor Urban</h5>
+</div>
+
+<div id="sections">
+  <mat-card id="parameters">
+    <mat-form-field class="example-full-width">
+      <mat-label>Tree ignition probability [0.0, 1.0] %:</mat-label>
+      <input matInput maxlength="5"  [(ngModel)]="parameters.probabilityOfRandomFire">
+      <mat-hint align="end"></mat-hint>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Ash to tree probability [0.0, 1.0] %:</mat-label>
+      <input matInput maxlength="5"  [(ngModel)]="parameters.probabilityOfRandomTree">
+      <mat-hint align="end"></mat-hint>
+    </mat-form-field>
+    <div>
+      <div class="wind-selector-wrapper">
+      <label>Wind direction: {{parameters.windDirection.toFixed(2)}} ° </label>
+      <div class="wind-selector" id="windSelector">
+        <div class="arrow" id="arrow"></div>
+      </div>
+      </div>
+      <mat-card>
+        Wind speed: {{windSpeed}}
+        <mat-slider
+          class="example-margin"
+          [max]="1"
+          [min]="0"
+          [step]="0.01"
+          [showTickMarks]="true">
+          <input matSliderThumb [(ngModel)]="windSpeed">
+        </mat-slider>
+
+      </mat-card>
+    </div>
+    <mat-card id="chart">
+      <h1>Percentage of cell states</h1>
+      <div id="current-step-counter">current step: {{currentStep}}</div>
+      <div>
+        <div>
+          Ash: {{getCurrentAshPercentage(rows).toFixed(1)}}
+        </div>
+        <div>
+          Tree: {{getCurrentTreePercentage(rows).toFixed(1)}}
+        </div>
+        <div>
+          Fire: {{getCurrentFirePercentage(rows).toFixed(1)}}
+        </div>
+      </div>
+      <canvas id="myChart"></canvas>
+    </mat-card>
+  </mat-card>
+
+  <mat-card>
+    <div id="controls">
+      <button mat-raised-button type="button" id="reset" (click)="reset()">reset</button>
+      <button mat-raised-button type="button" id="start" (click)="start()">start</button>
+      <button mat-raised-button type="button" id="pause" (click)="pause()">pause</button>
+      <button mat-raised-button type="button" id="step" (click)="step()">step</button>
+      <div id="rule"></div>
+    </div>
+    <div id="grid"></div>
+  </mat-card>
+</div>
+
+
+
