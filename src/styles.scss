@@ -1,11 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
-#grid {
+#grid, #wind-influence-grid {
   width: 100%;
+
   .row {
     width: 100%;
     display: flex;
@@ -25,7 +32,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 
   .green {
-    background-color: green;
+    background-color: #4fc130;
   }
 
   .silver {
@@ -39,6 +46,35 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .visible {
     visibility: visible;
   }
+}
 
+#wind-influence-grid {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .row {
+    width: fit-content;
+    flex-direction: row;
+
+    .cell {
+      display: block;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5em;
+      text-align: center;
+    }
+  }
+
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }
 

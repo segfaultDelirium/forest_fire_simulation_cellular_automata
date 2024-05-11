@@ -1,68 +1,122 @@
 <div id="header">
-  <h1>Projekt 2 automaty komórkowe: rozprzestrzenianie się pożaru lasu.</h1>
-  <h5>autor: Wiktor Urban</h5>
+    <h1>Projekt 2 automaty komórkowe: rozprzestrzenianie się pożaru lasu.</h1>
+    <h5>autor: Wiktor Urban</h5>
 </div>
 
 <div id="sections">
-  <mat-card id="parameters">
-    <mat-form-field class="example-full-width">
-      <mat-label>Tree ignition probability [0.0, 1.0] %:</mat-label>
-      <input matInput maxlength="5"  [(ngModel)]="parameters.probabilityOfRandomFire">
-      <mat-hint align="end"></mat-hint>
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <mat-label>Ash to tree probability [0.0, 1.0] %:</mat-label>
-      <input matInput maxlength="5"  [(ngModel)]="parameters.probabilityOfRandomTree">
-      <mat-hint align="end"></mat-hint>
-    </mat-form-field>
-    <div>
-      <div class="wind-selector-wrapper">
-      <label>Wind direction: {{parameters.windDirection.toFixed(2)}} ° </label>
-      <div class="wind-selector" id="windSelector">
-        <div class="arrow" id="arrow"></div>
-      </div>
-      </div>
-      <mat-card>
-        Wind speed: {{windSpeed}}
-        <mat-slider
-          class="example-margin"
-          [max]="1"
-          [min]="0"
-          [step]="0.01"
-          [showTickMarks]="true">
-          <input matSliderThumb [(ngModel)]="windSpeed">
-        </mat-slider>
+    <mat-card id="parameters">
+        <div class="flex-row">
+            <mat-form-field class="example-full-width">
+                <mat-label>Tree ignition probability [0.0, 1.0] %:</mat-label>
+                <input [(ngModel)]="parameters.probabilityOfRandomFire" matInput>
+                <mat-hint align="end"></mat-hint>
+            </mat-form-field>
+            <div class="buttons-container">
+                <button (click)="increaseProbabilityOfRandomFire()" mat-icon-button>
+                    <span class="material-symbols-outlined">
+                        keyboard_arrow_up
+                    </span>
+                </button>
+                <button (click)="decreaseProbabilityOfRandomFire()" mat-icon-button>
+                    <span class="material-symbols-outlined">
+                        keyboard_arrow_down
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="flex-row">
+            <mat-form-field class="example-full-width">
+                <mat-label>Ash to tree probability [0.0, 1.0] %:</mat-label>
+                <input [(ngModel)]="parameters.probabilityOfRandomTree" matInput>
+                <mat-hint align="end"></mat-hint>
+            </mat-form-field>
+            <div class="buttons-container">
+                <button (click)="increaseProbabilityOfRandomTree()" mat-icon-button>
+                    <span class="material-symbols-outlined">
+                        keyboard_arrow_up
+                    </span>
+                </button>
+                <button (click)="decreaseProbabilityOfRandomTree()" mat-icon-button>
+                    <span class="material-symbols-outlined">
+                        keyboard_arrow_down
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="wind-section">
+            <div class="wind-selector-wrapper">
+                <label>Wind direction: {{ parameters.windDirection.toFixed(2) }} ° </label>
+                <div class="wind-selector" id="windSelector">
+                    <div class="arrow" id="arrow"></div>
+                </div>
+            </div>
+            <mat-card>
+                Wind speed: {{ parameters.windSpeed }}
+                <mat-slider [max]="1"
+                            [min]="0"
+                            [showTickMarks]="true"
+                            [step]="0.01"
+                            id="wind-speed-slider">
+                    <input [(ngModel)]="parameters.windSpeed" matSliderThumb>
+                </mat-slider>
+            </mat-card>
+            <div id="wind-influence-grid">
+                <h2>Probability of catching fire.</h2>
+                @for (row of windInfluenceGrid; track row; let i = $index) {
+                    <div class="row">
+                        @for (cell of row; track cell; let j = $index) {
+                            <div [class]="'cell ' + getCellClassName(cell)">
+                                @if (i == 1 && j == 1) {
+                                    0
+                                } @else {
+                                    {{ calculateFireSpreadProbabilityForWindInfluenceGrid(windInfluenceGrid, i, j, parameters.windSpeed, parameters.windDirection).toFixed(2) }}
+                                }
+                            </div>
 
-      </mat-card>
-    </div>
-    <mat-card id="chart">
-      <h1>Percentage of cell states</h1>
-      <div id="current-step-counter">current step: {{currentStep}}</div>
-      <div>
-        <div>
-          Ash: {{getCurrentAshPercentage(rows).toFixed(1)}}
+                        }
+                    </div>
+
+                }
+            </div>
         </div>
-        <div>
-          Tree: {{getCurrentTreePercentage(rows).toFixed(1)}}
-        </div>
-        <div>
-          Fire: {{getCurrentFirePercentage(rows).toFixed(1)}}
-        </div>
-      </div>
-      <canvas id="myChart"></canvas>
     </mat-card>
-  </mat-card>
 
-  <mat-card>
-    <div id="controls">
-      <button mat-raised-button type="button" id="reset" (click)="reset()">reset</button>
-      <button mat-raised-button type="button" id="start" (click)="start()">start</button>
-      <button mat-raised-button type="button" id="pause" (click)="pause()">pause</button>
-      <button mat-raised-button type="button" id="step" (click)="step()">step</button>
-      <div id="rule"></div>
-    </div>
-    <div id="grid"></div>
-  </mat-card>
+    <mat-card>
+        <div id="controls">
+            <button (click)="reset()" id="reset" mat-raised-button type="button">reset</button>
+            <button (click)="start()" id="start" mat-raised-button type="button">start</button>
+            <button (click)="pause()" id="pause" mat-raised-button type="button">pause</button>
+            <button (click)="step()" id="step" mat-raised-button type="button">step</button>
+            <mat-card>
+                Animation frame delay: {{ animationFrameDelay }} ms.
+                <mat-slider [max]="1000"
+                            [min]="1"
+                            [showTickMarks]="true"
+                            [step]="1"
+                            id="animation-frame-delay-slider">
+                    <input (change)="reRunAnimation()" [(ngModel)]="animationFrameDelay" matSliderThumb>
+                </mat-slider>
+            </mat-card>
+        </div>
+
+        <div id="grid"></div>
+    </mat-card>
+    <mat-card id="chart">
+        <h1>Percentage of cell states</h1>
+        <div id="current-step-counter">current step: {{ currentStep }}</div>
+        <div>
+            <div>
+                Ash: {{ getCurrentAshPercentage(rows).toFixed(1) }}
+            </div>
+            <div>
+                Tree: {{ getCurrentTreePercentage(rows).toFixed(1) }}
+            </div>
+            <div>
+                Fire: {{ getCurrentFirePercentage(rows).toFixed(1) }}
+            </div>
+        </div>
+        <canvas id="myChart"></canvas>
+    </mat-card>
 </div>
 
 
