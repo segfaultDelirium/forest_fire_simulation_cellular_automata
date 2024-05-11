@@ -46,7 +46,6 @@ export function evolveCell(
         if (Math.random() < fireProbability) {
           return 'FIRE';
         }
-        // return 'FIRE'
       } else {
         if (Math.random() < parameters.probabilityOfRandomFire) {
           return 'FIRE';
@@ -143,41 +142,6 @@ function calculateFireSpreadProbability(
   const fireProbability: number = baseProbability + directionalProbability;
   return fireProbability;
 }
-
-// function calculateFireSpreadProbability(
-//   dx: number,
-//   dy: number,
-//   windSpeed: number,
-//   windDirection: number,
-// ): number {
-//   if (windSpeed === 0) {
-//     return 1.0; // All neighboring cells catch fire with 100% probability if wind speed is zero
-//   }
-//
-//   // Convert wind direction to radians for calculation
-//   const windRad: number = (windDirection * Math.PI) / 180;
-//
-//   // Calculate wind vector components
-//   const windVectorX: number = Math.cos(windRad);
-//   const windVectorY: number = -Math.sin(windRad); // Negative because a positive angle is counterclockwise
-//
-//   // Calculate normalized direction vector
-//   const distance: number = Math.sqrt(dx * dx + dy * dy);
-//   const directionVectorX: number = dx / distance;
-//   const directionVectorY: number = dy / distance;
-//
-//   // Calculate the dot product for directional influence
-//   let directionalInfluence: number =
-//     (directionVectorX * windVectorX + directionVectorY * windVectorY + 1) / 2;
-//
-//   // Adjust probability based on wind speed
-//   const windEffect: number = windSpeed * 0.8;
-//   const baseProbability: number = 0.3;
-//   let fireProbability: number =
-//     baseProbability + directionalInfluence * windEffect;
-//
-//   return Math.min(fireProbability, 1);
-// }
 
 export function generateInitialRows() {
   const rows = [...Array(ROW_COUNT).keys()].map((_i) => {
