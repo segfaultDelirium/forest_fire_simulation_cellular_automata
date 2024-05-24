@@ -145,6 +145,7 @@ export class AppComponent implements OnInit {
     this.programRunSubscription?.unsubscribe();
     this.rows = generateInitialRows();
     this.currentStep = 0;
+    drawGrid(this.rows);
   }
 
   start() {
