@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
           event.clientX - centerX,
         );
         const degrees = angle * (180 / Math.PI) + 90; // Normalize angle to make 0 degrees point upwards
-        parameters.windDirection = degrees;
+        parameters.windDirection = Math.round(degrees);
         document.getElementById('arrow')!.style.transform =
           `rotate(${degrees}deg)`;
       });
@@ -92,6 +92,12 @@ export class AppComponent implements OnInit {
     // drawWindInfluenceGrid(this.windInfluenceGrid);
 
     this.run();
+  }
+
+  rotateArrow(){
+    const degrees = this.parameters.windDirection; // Normalize angle to make 0 degrees point upwards
+    document.getElementById('arrow')!.style.transform =
+      `rotate(${degrees}deg)`;
   }
 
   run() {

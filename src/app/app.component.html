@@ -45,8 +45,13 @@
         </div>
         <div class="wind-section">
             <div class="wind-selector-wrapper">
-                <label>Wind direction: {{ parameters.windDirection.toFixed(2) }} ° </label>
-                <div class="wind-selector" id="windSelector">
+                <label>Wind direction: {{ parameters.windDirection.toFixed(0) }} ° </label>
+              <mat-form-field class="example-form-field">
+                <input matInput type="number" (input)="rotateArrow()" [(ngModel)]="parameters.windDirection" [max]="270" [min]="-90" min>
+              </mat-form-field>
+
+
+              <div class="wind-selector" id="windSelector">
                     <div class="arrow" id="arrow"></div>
                 </div>
             </div>
